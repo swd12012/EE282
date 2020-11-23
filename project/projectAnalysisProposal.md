@@ -1,3 +1,4 @@
+
 ### Project Analyasis Proposal
 ##### Sam Du, EE282 Fall 2020
 
@@ -12,6 +13,7 @@ The retinal pigment epithelium (RPE) is a monolayer of epithelial cells that und
 I will analyze a bulk RNAseq dataset from a recently published paper that models photoreceptor death in a photosensitive mouse model ([Luu et al. 2020, _Human Molecular Genetics_](https://academic.oup.com/hmg/article/29/15/2611/5874042)). In this model, mice that are double knockouts for _Abca4_ and _Rhd8_ exhibit rapid photoreceptor degeneration upon bright light exposure. As the RPE is vital for maintaining the health of photoreceptors under physiologic conditions, the RPE may play a pivotal role when dealing with a stressor such as light induced degeneration.
 
 To access this data, I will find the data that is either stored on a hard drive in the lab or practice obtaining data from the NCBI under the GEO/SRA accession [GSE153817](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA644202&o=acc_s%3Aa). Specifically, I will examine RNAseq data from the RPE pre-bleach (PB), 6 hours after bleach, and 3 days after bleach, with 4 animals in each group (samples GSM4654726-4654741).
+
 
 ##### Data Analysis
 
