@@ -57,7 +57,7 @@ To calculate sequence lengths and GC content for sequences greater than 100kb:
 ```bash
 bioawk -c fastx \
 '{print length($seq) "\t" gc($seq) "\t" $name}' \
-demlr6.gt.fa.gz \
+dmelr6.gt.fa.gz \
 | sort -k1,1rn \
 > dmelr6.lte_lengthSorted
 ```
@@ -66,7 +66,7 @@ To calculate sequence lengths and GC content for sequences less than or equal to
 ```bash
 bioawk -c fastx \
 '{print length($seq) "\t" gc($seq) "\t" $name}' \
-demlr6.lte.fa.gz \
+dmelr6.lte.fa.gz \
 | sort -k1,1rn \
 > dmelr6.lte_lengthSorted
 ```
@@ -78,25 +78,24 @@ I used ggplot2 in R Studio on my machine to make these plots by loading in the s
 
 Full code can be found in `/code/length_GC_plotting.R`
 
-Results and figures can be found in `/figures/`'th <- log(greaterThan$length)
+Results and figures can be found in `/figures/`
 
-plot_greaterThanLength <- ggplot(data=greaterThan, aes(x=logLength)) +geom_histogram(
-binwidth=0.01)
-plot_greaterThanLength
+##### Plotting Cumulative Sequence Size From Largest to Smallest
 
-ggsave('greatThanLength.png')
-
-lessThan <- read.table(file="clipboard", sep='\t', header=F)
-
-colnames(lessThan) <- c('length', 'GC', 'name')
-
-lessThan$log_length <- log(lessThan$length)
-
-plot_lessThanLength <- ggplot(data=lessThan, aes(x=log_length)) +geom_histogram(
-bins=200)
-plot_lessThanLength
-
-ggsave('lessThanLength.png')
+To plot CDF for sequences greater than 100kb:
+```bash
+plotCDF <(bioawk -c fastx \
+'{print length($seq)}' \
+dmelr6.gt.fa.gz) \
+../figures/greaterThanCDF.png
 ```
 
-##### Plotting GC% Distribution
+To plot CDF for sequences less than or equal to 100kb:
+```bash
+plotCDF <(bioawk -c fastx \
+'{print length($seq)}' \
+dmelr6.lte.fa.gz) \
+../figures/lessThanCDF.png
+```
+
+
