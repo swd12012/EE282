@@ -51,7 +51,7 @@ faSize dmelr6.lte.fa.gz
 |          Total # of Ns |            662593           |       490385       |
 |   Total # of sequences |             1863            |          7         |
 
-### Plot Sequence Length Distributions, GC Percentage, Cumulative Sequence Size of Genom Partitions
+### Plot Sequence Length Distributions, GC Percentage, Cumulative Sequence Size of Genome Partitions
 
 To calculate sequence lengths and GC content for sequences greater than 100kb:
 ```bash
@@ -79,10 +79,15 @@ I used ggplot2 in R Studio on my machine to make these plots by loading in the s
 Full code can be found in `/code/length_GC_plotting.R`
 
 Results and figures can be found in `/figures/`, linked below for convenience:
+
 [greaterThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanLength.png)
+
 [greaterThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanGC.png)
+
 [lessThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanLength.png)
+
 [lessThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanGC.png)
+
 
 ##### Plotting Cumulative Sequence Size From Largest to Smallest
 
@@ -103,7 +108,10 @@ dmelr6.lte.fa.gz) \
 ```
 
 Images linked below for convenience:
+
 [greaterThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanCDF.png)
+
 [lessThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanCDF.png)
+
 
 ### Genome Assembly
