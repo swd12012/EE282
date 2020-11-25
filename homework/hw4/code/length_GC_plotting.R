@@ -19,7 +19,7 @@ plot_greaterThanLength <- ggplot(data=greaterThan, aes(x=log_length)) +geom_hist
 plot_greaterThanLength
 
 #Save file
-ggsave('greatThanLength.png')
+ggsave('greaterThanLength.png')
 
 ##Less than or equal to 100kb
 
@@ -45,7 +45,7 @@ ggsave('lessThanLength.png')
 ##Greater than 100kb
 
 plot_greaterThanGC <- ggplot(data=greaterThan, aes(x=GC)) +geom_histogram(
-  binwidth=0.01)
+  binwidth=0.01) + labs(title = 'GC Percentage, >100kb')
 plot_greaterThanGC
 
 #Save file
@@ -53,7 +53,8 @@ ggsave('greaterThanGC.png')
 
 ##Less than or equal to 100kb
 
-plot_lessThanGC <- ggplot(data=lessThan, aes(x=GC)) + geom_histogram(bins=200)
+plot_lessThanGC <- ggplot(data=lessThan, aes(x=GC)) + geom_histogram(bins=200) + 
+  labs(title = 'GC Percentage, <100kb')
 plot_lessThanGC
 
 #Save file
