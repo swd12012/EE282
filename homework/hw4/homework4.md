@@ -115,3 +115,20 @@ Images linked below for convenience:
 
 
 ### Genome Assembly
+
+The data was downloaded with `wget` and `minimap2` and `miniasm` were downloaded via `conda`.
+
+I used `minimap2` to overlap my reads with the following command:
+
+```bash
+minimap2 -x ava-ont iso1_onp_a2_1kb.fastq.gz iso1_onp_a2_1kb.fastq.gz \
+| gzip -1 \
+> reads.paf.gz
+```
+
+I then used `miniasm` to construct my assembly:
+
+```bash
+miniasm -f iso1_onp_a2_1kb.fastq.gz reads.paf.gz \
+> reads.gfa
+```
