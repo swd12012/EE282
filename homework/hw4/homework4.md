@@ -164,4 +164,5 @@ unitigs.fa \
 ```
 
 The CDF is shown below:
+
 ![AssemblyCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/sorted_assembly_CDF.png)
