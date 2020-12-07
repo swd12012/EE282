@@ -78,13 +78,13 @@ Full code can be found in `/code/length_GC_plotting.R`
 
 Results and figures can be found in `/figures/`, linked below for convenience:
 
-[greaterThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanLength.png)
+![greaterThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanLength.png)
 
-[greaterThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanGC.png)
+![greaterThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanGC.png)
 
-[lessThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanLength.png)
+![lessThanLength](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanLength.png)
 
-[lessThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanGC.png)
+![lessThanGC](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanGC.png)
 
 
 ##### Plotting Cumulative Sequence Size From Largest to Smallest
@@ -107,9 +107,9 @@ dmelr6.lte.fa.gz) \
 
 Images linked below for convenience:
 
-[greaterThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanCDF.png)
+![greaterThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/greaterThanCDF.png)
 
-[lessThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanCDF.png)
+![lessThanCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/lessThanCDF.png)
 
 
 ### Genome Assembly
@@ -164,4 +164,4 @@ unitigs.fa \
 ```
 
 The CDF is shown below:
-![AssemblyCDF]()
+![AssemblyCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/sorted_assembly_CDF.png)
