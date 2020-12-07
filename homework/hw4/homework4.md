@@ -3,8 +3,6 @@
 
 ___
 
-Working directory is in `hw4/` unless otherwise specified.
-
 ### Summarize Partitions of a Genome
 
 **Data**: Downloaded the most current _D. melanogaster_ genome (dmel-all-chromosome-r6.36.fasta.gz) from [FlyBase](ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.36_FB2020_05/fasta/).
@@ -153,3 +151,17 @@ awk ' $0 ~/^S/ { print ">" $2" \n" $3 } ' reads.gfa \
 ```
 
 When I used 'less' on my 'n50.txt', it said the N50 of my assembly was '4,494,246', compared to the community [N50](https://www.ncbi.nlm.nih.gov/assembly/GCF_000001215.4) of '25,286,936'.
+
+To plot my CDF, I first calculated the contig lenghts, reverse numerically sorted them, and then plotted a CDF with 'plotCDF':
+
+```bash
+plotCDF <(bioawk -c fastx \
+'{print length($seq)}' \
+unitigs.fa \
+| sort -k1,1rn \
+> unitigs_sorted.fa) \
+../figures/sorted_assembly_CDF.png
+```
+
+The CDF is shown below:
+![AssemblyCDF]()
