@@ -118,10 +118,10 @@ Images linked below for convenience:
 
 The data was downloaded with `wget` and `minimap2` and `miniasm` were downloaded via `conda`.
 
-I used `minimap2` to overlap my reads with the following command:
+I used `minimap` to overlap my reads with the following command:
 
 ```bash
-minimap2 -x ava-ont iso1_onp_a2_1kb.fastq.gz iso1_onp_a2_1kb.fastq.gz \
+minimap -t 32 -Sw5 -L100 -m0 iso1_onp_a2_1kb.fastq.gz{,} \
 | gzip -1 \
 > reads.paf.gz
 ```
@@ -132,3 +132,24 @@ I then used `miniasm` to construct my assembly:
 miniasm -f iso1_onp_a2_1kb.fastq.gz reads.paf.gz \
 > reads.gfa
 ```
+
+I used Dr. Emerson's N50 code to create a bash function:
+
+```bash
+n50 () {
+  bioawk -c fastx ' { print length($seq); n=n+length($seq); } END { print n; } ' $1 \
+  | sort -rn \
+  | gawk ' NR == 1 { n = $1 }; NR > 1 { ni = $1 + ni; } ni/n > 0.5 { print $1; exit; } '
+}
+```
+
+To create unitigs:
+
+```bash
+awk ' $0 ~/^S/ { print ">" $2" \n" $3 } ' reads.gfa \
+| tee >(n50 /dev/stdin > n50.txt) \
+| fold -w 60 \
+> unitigs.fa
+```
+
+When I used 'less' on my 'n50.txt', it said the N50 of my assembly was '4,494,246', compared to the community [N50](https://www.ncbi.nlm.nih.gov/assembly/GCF_000001215.4) of '25,286,936'.
