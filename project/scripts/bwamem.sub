@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#SBATCH --job-name=bwa-mem   ## Name of the job
+#SBATCH -A ecoevo282         ## account to charge 
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=4    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+#SBATCH --array={00..15}     ## submit 15 jobs to iterate over
+
+module load bwa
+
+threads=4
+PROJECTDIR=/data/class/ecoevo282/swdu/ee282/project
+REF=${PROJECTDIR}/reference/Mus_musculus.GRCm38.dna.toplevel.fa.gz
+READPATH=${PROJECTDIR}/data/rawdata/
+R1=${READPATH}SRR121484{SLURM_ARRAY_TASK_ID}_1.fastq.gz
+R2=${READPATH}SRR121484{SLURM_ARRAY_TASK_ID}_2.fastq.gz
+
+srun bwa mem -t $threads $REF $R1 $R2 > \
+${PROJECTDIR}/data/processed/SRR121484_{SLURM_ARRAY_TASK_ID}.sam

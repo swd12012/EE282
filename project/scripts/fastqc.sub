@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#SBATCH --job-name=FASTQC      ## Name of the job.
+#SBATCH -A ecoevo282    ## account to charge 
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=1    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log fileif [ -z $1 ]
+
+  
+if [ -z $1 ]
+then
+    	echo "sh fastqc.sh fastq"
+        exit -1
+fi
+
+fq1=$1
+shift
+
+SEQFILE="$fq1"
+if [ ! -z $1 ] || [[ $1 =~ '^[^-]' ]]
+then
+    	fq2=$1
+	SEQFILE="$fq1 $fq2"
+        shift
+fi
+
+echo $SEQFILE
+
+module load fastqc
+
+out=$(dirname $fq1)
+#echo $out
+
+fastqc -o $out -f fastq --extract $fq1
