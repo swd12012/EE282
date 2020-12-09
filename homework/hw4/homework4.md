@@ -167,8 +167,31 @@ The CDF is shown below:
 
 ![AssemblyCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/sorted_assembly_CDF.png)
 
+
+
 ### Running BUSCO
 
+I ran BUSCO analysis on my assembly by submitting the job as an 'sbatch' to HPC3 with the following command within the submit script:
+
 ```bash
-busco -c 32 -i unitigs.fa -l diptera_odb10 -o Dmel_busco -m genome
+busco -c 16 -i unitigs.fa -l diptera_odb10 -o Dmel_busco -m genome
+```
+
+The ouput of the BUSCO analysis was:
+
+```bash
+# BUSCO version is: 4.1.4
+# The lineage dataset is: diptera_odb10 (Creation date: 2020-08-05, number of s$
+# Summarized benchmarking in BUSCO notation for file unitigs.fa
+# BUSCO was run in mode: genome
+
+        ***** Results: *****
+
+        C:0.2%[S:0.2%,D:0.0%],F:2.0%,M:97.8%,n:3285
+        7	Complete BUSCOs (C)
+        7	Complete and single-copy BUSCOs (S)
+        0	Complete and duplicated BUSCOs (D)
+        66	Fragmented BUSCOs (F)
+        3212    Missing BUSCOs (M)
+        3285    Total BUSCO groups searched
 ```
