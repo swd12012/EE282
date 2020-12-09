@@ -166,3 +166,9 @@ unitigs.fa \
 The CDF is shown below:
 
 ![AssemblyCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/sorted_assembly_CDF.png)
+
+### Running BUSCO
+
+```bash
+busco -c 32 -i unitigs.fa -l diptera_odb10 -o Dmel_busco -m genome
+```
