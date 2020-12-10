@@ -167,6 +167,52 @@ The CDF is shown below:
 
 ![AssemblyCDF](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/sorted_assembly_CDF.png)
 
+To compare the CDF for the public assemblies, I first downloaded the files:
+
+```bash
+r6url="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/215/GCA_000001215.4_Release_6_plus_ISO1_MT/GCA_000001215.4_Release_6_plus_ISO1_MT_genomic.fna.gz"
+
+trusequrl="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/705/575/GCA_000705575.1_D._melanogaster_TruSeq_synthetic_long-read_assembly/GCA_000705575.1_D._melanogaster_TruSeq_synthetic_long-read_assembly_genomic.fna.gz"
+```
+
+From Dr. Emerson, to download and to process the truseq data:
+
+```bash
+wget -O - -q $trusequrl \
+| tee data/ISO1.truseq.ctg.fa.gz \
+| gunzip -c \
+| faSize -detailed /dev/stdin \
+| sort -rnk 2,2 \
+| tee data/ISO1.truseq.ctg.sorted.namesizes.txt \
+| cut -f 2 \
+> data/ISO1.truseq.ctg.sorted.sizes.txt
+
+wget -O - -q $r6url \
+| tee data/ISO1.r6.scaff.fa.gz \
+| gunzip -c \
+| tee >(faSize -detailed /dev/stdin \
+        | sort -rnk 2,2 \
+        | tee data/ISO1.r6.scaff.sorted.namesizes.txt \
+        | cut -f 2 \
+        > data/ISO1.r6.scaff.sorted.sizes.txt) \
+| faSplitByN /dev/stdin /dev/stdout 10 \
+| tee >(gzip -c > data/ISO1.r6.ctg.fa.gz) \
+| faSize -detailed /dev/stdin \
+| sort -rnk 2,2 \
+| tee data/ISO1.r6.ctg.sorted.namesizes.txt \
+| cut -f 2 \
+> data/ISO1.r6.ctg.sorted.sizes.txt
+```
+
+To compare all of the CDFs together:
+
+```bash
+plotCDF ISO1.*.sizes.txt unitigs_sorted.fa /figures/comparisonCDF.png
+```
+
+![comparisonCDF.png](https://github.com/swd12012/ee282/blob/homework4/homework/hw4/figures/comparisonCDF.png)
+
+From this CDF plot, comparing it to the assembly, our assembly was decent; not the best, but definitely better than the truseq assembly. 
 
 
 ### Running BUSCO
@@ -195,3 +241,30 @@ The ouput of the BUSCO analysis was:
         3212    Missing BUSCOs (M)
         3285    Total BUSCO groups searched
 ```
+
+I ran BUSCO analysis on the NCBI contig assembly by submitting the job as an 'sbatch' to HPC3 with the following command within the submit script:
+
+```bash
+busco -c 32 -i ISO1.r6.ctg.fa -l diptera_odb10 -o DmelNCBI_busco -m genome
+```
+
+The ouput of the BUSCO analysis was:
+
+```bash
+# BUSCO version is: 4.1.4
+# The lineage dataset is: diptera_odb10 (Creation date: 2020-08-05, number of species: 56, number of BUSCOs: 3285)
+# Summarized benchmarking in BUSCO notation for file ISO1.r6.ctg.fa
+# BUSCO was run in mode: genome
+
+        ***** Results: *****
+
+        C:99.5%[S:99.1%,D:0.4%],F:0.2%,M:0.3%,n:3285
+        3269    Complete BUSCOs (C)
+        3255    Complete and single-copy BUSCOs (S)
+        14      Complete and duplicated BUSCOs (D)
+        5       Fragmented BUSCOs (F)
+        11      Missing BUSCOs (M)
+        3285    Total BUSCO groups searched
+```
+
+From these results, our genome did assemble, but there were only 7 complete BUSCOs, while there were 3278 fragmented or missing BUSCOs. This means that by these heuristics, our assembly was fairly poor in quality. The NCBI BUSCO showed a much more complete assembly, with 3269 complete BUSCOs and 16 fragmented or missing BUSCOs.
