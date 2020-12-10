@@ -7,7 +7,7 @@
 #SBATCH --ntasks=1           ## (-n) number of tasks to launch
 #SBATCH --cpus-per-task=32    ## number of cores the job needs
 #SBATCH --error=slurm-%J.err ## error log file
-#SBATCH --array=0-9     ## submit 16 jobs to iterate over
+#SBATCH --array=10,11,12,13,14,15     ## submit 16 jobs to iterate over
 
 module load bwa
 
@@ -15,8 +15,8 @@ threads=32
 PROJECTDIR=/data/class/ecoevo282/swdu/ee282/project
 REF=${PROJECTDIR}/reference/Mus_musculus.GRCm38.dna.toplevel.fa.gz
 READPATH=${PROJECTDIR}/data/rawdata/
-R1=${READPATH}SRR1214840${SLURM_ARRAY_TASK_ID}_1.fastq.gz
-R2=${READPATH}SRR1214840${SLURM_ARRAY_TASK_ID}_2.fastq.gz
+R1=${READPATH}SRR121484${SLURM_ARRAY_TASK_ID}_1.fastq.gz
+R2=${READPATH}SRR121484${SLURM_ARRAY_TASK_ID}_2.fastq.gz
 
 module load bwa
 
