@@ -20,6 +20,4 @@ minimap -Sw5 -L100 -m0 iso1_onp_a2_1kb.fastq.gz{,} \
 
 minimap -t 32 -Sw5 -L100 -m0 reads.fq{,} \
 | gzip -1 \
-> onp.paf.gz reads.fq{,} \
-| gzip -1 \
-> onp.paf.gzz
+> onp.paf.gz
