@@ -19,9 +19,9 @@ wget ftp://ftp.ensembl.org/pub/release-102/gtf/mus_musculus/Mus_musculus.GRCm38.
 
 I indexed the genome with BWA index (v0.7.8-r455).
 
-I also downloaded the ENSEMBL gene annotations from Biomart for GRCm38 that reports gene name, type, description, and ENSEMBL ID and created a file named `ENSEMBL_annotations.txt' in my `references` folder.
+I also downloaded the ENSEMBL gene annotations from Biomart for GRCm38 that reports gene name, type, description, and ENSEMBL ID and created a file named `ENSEMBL_annotations.txt` in my `references` folder.
 
-##### Data Acquitisition
+##### Data Acquisition
 
 Data was downloaded through the European Nucleotide Archive. FTP links for runs SRR12148400 through SRR12148415 were added into a file `download.txt` located in `/data/rawdata/`. Files were batch downloaded with wget with the following command:
 
@@ -31,7 +31,7 @@ wget -i download.txt
 
 ##### Data Pre-Processing
 
-FASTQC was used to analyzed read quality. The shell scripts `fastqc.sh` and `fastqc_dir.sh` in the directory `/scripts/` were used to run FASTQC on all the `*.gz` files in my specified directory and output the FastQC files in the same directory:
+FASTQC was used to analyze read quality. The shell scripts ![`fastqc.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc.sub) and ![`fastqc_dir.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc_dir.sh) in the directory `/scripts/` were used to run FASTQC on all the `*.gz` files in my specified directory and output the FastQC files in the same directory:
 
 ```bash
 sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu/ee282/project/data/rawdata/ /data/homezvol2/swdu/ee282/project/data/rawdata/
@@ -39,7 +39,11 @@ sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu
 
 The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
 
-I created a `targets` file which annotated my .bam files with sample name, group, condition, etc.
+I created a ![targets file](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_sample_vsd.pdf) which annotated my .bam files with sample name, group, condition, etc.
+
+##### Data Alignment
+
+Data was aligned with `bwa mem` and submitted to SLURM as a batch job with the two following scripts ![1](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem.sub) ![2](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem10-15.sub).
 
 ##### Read counting
 
@@ -85,6 +89,7 @@ cut -f7-22 \
 > readcounts_samplesonly.txt
 ```
 
+I then created PCA plots for the dataset in R in the terminal:
 ```R
 library(DESeq2)
 
@@ -118,3 +123,7 @@ pdf('PCA_group_vsd.pdf')
 plotPCA(group_vsd, 'conditions')
 dev.off()
 ```
+
+![GroupPCA](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_group_vsd.pdf)
+
+![SamplePCA](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_sample_vsd.pdf)
