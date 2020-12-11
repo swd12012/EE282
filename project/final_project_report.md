@@ -19,7 +19,7 @@ wget ftp://ftp.ensembl.org/pub/release-102/gtf/mus_musculus/Mus_musculus.GRCm38.
 
 I indexed the genome with BWA index (v0.7.8-r455).
 
-I also downloaded the ENSEMBL gene annotations from Biomart for GRCm38 that reports gene name, type, description, and ENSEMBL ID.
+I also downloaded the ENSEMBL gene annotations from Biomart for GRCm38 that reports gene name, type, description, and ENSEMBL ID and created a file named `ENSEMBL_annotations.txt' in my `references` folder.
 
 ##### Data Acquitisition
 
@@ -40,22 +40,6 @@ sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu
 The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
 
 I created a `targets` file which annotated my .bam files with sample name, group, condition, etc.
-
-##### Create GTF feature database
-
-I used the R package 'GenomicFeatures' (v1.42.1) to create a GTF SQLite database for use in downstream analysis:
-
-```bash
-module load R/4.0.2
-```
-
-```R
-library(GenomicFeatures)
-
-txdb <- makeTxDbFromGFF(file='Mus_musculus.GRCm38.102.gtf.gz', format='gtf', dataSource='ENSEMBL', organism = 'Mus musculus')
-
-saveDb(txdb, file='Mus_musculus.sqlite')
-```
 
 ##### Read counting
 
@@ -122,15 +106,15 @@ sample_dataset <- DESeqDataSetFromMatrix(countData=count_dataframe, colData=colD
 group_dataset <- DESeqDataSetFromMatrix(countData=count_dataframe, colData=colDataGroup, design = ~ conditions)
 
 #Apply variance stabilizing transformation
-sample_vsd <- varianceStablizingTransformation(sample_dataset)
-group_vsd <- varianceStablizingTransformation(group_dataset)
+sample_vsd <- varianceStabilizingTransformation(sample_dataset)
+group_vsd <- varianceStabilizingTransformation(group_dataset)
 
 #Plot graphs
-pdf('./results/PCA_sample_vsd.pdf')
-plotPCA(sample_vsd)
+pdf('PCA_sample_vsd.pdf')
+plotPCA(sample_vsd, 'conditions')
 dev.off()
 
-pdf('./results/PCA_group_vsd.pdf')
-plotPCA(group_vsd)
+pdf('PCA_group_vsd.pdf')
+plotPCA(group_vsd, 'conditions')
 dev.off()
 ```
