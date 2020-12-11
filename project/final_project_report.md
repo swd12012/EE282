@@ -19,6 +19,8 @@ wget ftp://ftp.ensembl.org/pub/release-102/gtf/mus_musculus/Mus_musculus.GRCm38.
 
 I indexed the genome with BWA index (v0.7.8-r455).
 
+I also downloaded the ENSEMBL gene annotations from Biomart for GRCm38 that reports gene name, type, description, and ENSEMBL ID.
+
 ##### Data Acquitisition
 
 Data was downloaded through the European Nucleotide Archive. FTP links for runs SRR12148400 through SRR12148415 were added into a file `download.txt` located in `/data/rawdata/`. Files were batch downloaded with wget with the following command:
@@ -35,6 +37,10 @@ FASTQC was used to analyzed read quality. The shell scripts `fastqc.sh` and `fas
 sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu/ee282/project/data/rawdata/ /data/homezvol2/swdu/ee282/project/data/rawdata/
 ```
 
+The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
+
+I created a `targets` file which annotated my .bam files with sample name, group, condition, etc.
+
 ##### Create GTF feature database
 
 I used the R package 'GenomicFeatures' (v1.42.1) to create a GTF SQLite database for use in downstream analysis:
@@ -49,4 +55,82 @@ library(GenomicFeatures)
 txdb <- makeTxDbFromGFF(file='Mus_musculus.GRCm38.102.gtf.gz', format='gtf', dataSource='ENSEMBL', organism = 'Mus musculus')
 
 saveDb(txdb, file='Mus_musculus.sqlite')
+```
+
+##### Read counting
+
+I used the function `featureCounts` from the package Subread (v2.0.1) to perform my counts.
+
+```bash
+featureCounts -T 16 \
+  -a /data/class/ecoevo282/swdu/ee282/project/reference/Mus_musculus.GRCm38.102.gtf.gz \
+  -o /data/class/ecoevo282/swdu/ee282/project/data/processed/readCounts.txt \
+  /data/class/ecoevo282/swdu/ee282/project/data/processed/*.bam
+  ```
+
+On average, 85% of each bam file was aligned and counted by `featureCounts`.
+
+| __Sample__           | % reads aligned |
+|------------------|:---------------:|
+| SRR121484_0.bam  |       85.8      |
+| SRR121484_10.bam |       85.5      |
+| SRR121484_11.bam |       85.1      |
+| SRR121484_12.bam |       85.7      |
+| SRR121484_13.bam |       85.5      |
+| SRR121484_14.bam |       85.6      |
+| SRR121484_15.bam |       85.9      |
+| SRR121484_1.bam  |       86.1      |
+| SRR121484_2.bam  |       86.4      |
+| SRR121484_3.bam  |       86.2      |
+| SRR121484_4.bam  |       85.4      |
+| SRR121484_5.bam  |       86.6      |
+| SRR121484_6.bam  |       84.8      |
+| SRR121484_7.bam  |       83.9      |
+| SRR121484_8.bam  |       84.5      |
+| SRR121484_9.bam  |       86.1      |
+
+##### Data Visualization and PCA plotting
+
+I used DESeq2 (v) to create group- and sample-wise PCA plotting by variance stablizing transformation.
+
+First, I cut out the columns that contain only the samples by running the following:
+
+```bash
+cat readcounts.txt \
+cut -f7-22 \
+> readcounts_samplesonly.txt
+```
+
+```R
+library(DESeq2)
+
+#Read in count file as a dataframe
+count_dataframe <- as.matrix(read.delim('readcounts_samplesonly.txt'), header=TRUE)
+
+#Reorder count file by column
+count_dataframe <- count_dataframe[,c(1,8:16, 2:7)]
+
+#Read in targets file for sample annotation
+targets <- read.delim('../targets', comment.char='#', header=TRUE, sep='\t')
+
+#Create dataframes for PCA analysis, one based on sample and one based on group
+colDataGroup <- data.frame(row.names=targets$SampleLong, conditions=targets$Factor)
+colDataSample <- data.frame(row.names=targets$SampleLong, conditions=targets$SampleLong)
+
+#Create DESeq dataset
+sample_dataset <- DESeqDataSetFromMatrix(countData=count_dataframe, colData=colDataSample, design = ~ conditions)
+group_dataset <- DESeqDataSetFromMatrix(countData=count_dataframe, colData=colDataGroup, design = ~ conditions)
+
+#Apply variance stabilizing transformation
+sample_vsd <- varianceStablizingTransformation(sample_dataset)
+group_vsd <- varianceStablizingTransformation(group_dataset)
+
+#Plot graphs
+pdf('./results/PCA_sample_vsd.pdf')
+plotPCA(sample_vsd)
+dev.off()
+
+pdf('./results/PCA_group_vsd.pdf')
+plotPCA(group_vsd)
+dev.off()
 ```

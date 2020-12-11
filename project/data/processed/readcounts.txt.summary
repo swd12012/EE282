@@ -1,0 +1,15 @@
+Status	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_0.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_10.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_11.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_12.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_13.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_14.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_15.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_1.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_2.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_3.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_4.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_5.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_6.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_7.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_8.bam	/data/class/ecoevo282/swdu/ee282/project/data/processed/SRR121484_9.bam
+Assigned	44961435	42174618	44815675	40301623	41789317	39340535	44822075	43867300	46085356	42773092	82191847	93736656	90908183	88788905	41339431	37197650
+Unassigned_Unmapped	500616	486294	604195	349915	468170	421761	467288	469725	471818	434549	498832	400530	861289	1085305	694590	380394
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	4732969	4610699	4611651	4198988	4554266	4278707	4688113	4539795	4584772	4394478	9907035	9326562	10818250	11670360	4786436	3688979
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	2205679	2029509	2602958	2178731	2061476	1898142	2171840	2093851	2216776	2028349	3666520	4764660	4575876	4341648	2116359	1945775

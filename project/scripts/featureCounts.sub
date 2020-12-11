@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#SBATCH --job-name=featureCounts   ## Name of the job
+#SBATCH -A ecoevo282         ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=16    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+
+featureCounts -T 16 \
+  -a /data/class/ecoevo282/swdu/ee282/project/reference/Mus_musculus.GRCm38.102.gtf.gz \
+  -o /data/class/ecoevo282/swdu/ee282/project/data/processed/readcounts.txt \
+  /data/class/ecoevo282/swdu/ee282/project/data/processed/*.bam
