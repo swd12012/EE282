@@ -31,7 +31,7 @@ wget -i download.txt
 
 ##### Data Pre-Processing
 
-FASTQC was used to analyze read quality. The shell scripts ![`fastqc.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc.sub) and ![`fastqc_dir.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc_dir.sh) in the directory `/scripts/` were used to run FASTQC on all the `*.gz` files in my specified directory and output the FastQC files in the same directory:
+FASTQC was used to analyze read quality. The shell scripts [`fastqc.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc.sub) and [`fastqc_dir.sh`](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/fastqc_dir.sh) in the directory `/scripts/` were used to run FASTQC on all the `*.gz` files in my specified directory and output the FastQC files in the same directory:
 
 ```bash
 sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu/ee282/project/data/rawdata/ /data/homezvol2/swdu/ee282/project/data/rawdata/
@@ -39,11 +39,11 @@ sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu
 
 The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
 
-I created a ![targets file](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_sample_vsd.pdf) which annotated my .bam files with sample name, group, condition, etc.
+I created a [targets file](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_sample_vsd.pdf) which annotated my .bam files with sample name, group, condition, etc.
 
 ##### Data Alignment
 
-Data was aligned with `bwa mem` and submitted to SLURM as a batch job with the two following scripts ![1](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem.sub) ![2](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem10-15.sub).
+Data was aligned with `bwa mem` and submitted to SLURM as a batch job with the two following scripts [1](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem.sub) [2](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem10-15.sub).
 
 ##### Read counting
 
@@ -79,7 +79,7 @@ On average, 85% of each bam file was aligned and counted by `featureCounts`.
 
 ##### Data Visualization and PCA plotting
 
-I used DESeq2 (v) to create group- and sample-wise PCA plotting by variance stablizing transformation.
+I used DESeq2 (v) to create group- and sample-wise PCA plotting by variance stablizing transformation. This will help analyse the variance of each sample and each group and point to potential outliers that may need to be removed in following steps.
 
 First, I cut out the columns that contain only the samples by running the following:
 
@@ -114,16 +114,32 @@ group_dataset <- DESeqDataSetFromMatrix(countData=count_dataframe, colData=colDa
 sample_vsd <- varianceStabilizingTransformation(sample_dataset)
 group_vsd <- varianceStabilizingTransformation(group_dataset)
 
+#Apply regularized log transformation
+sample_rlog <- rlog(sample_dataset)
+group_rlog <- rlog(group_dataset)
+
 #Plot graphs
-pdf('PCA_sample_vsd.pdf')
+png('../../figures/sample_vsd_PCA.png', width=8, height=8, res=300, units='in')
 plotPCA(sample_vsd, 'conditions')
 dev.off()
 
-pdf('PCA_group_vsd.pdf')
+png('../../figures/group_vsd_PCA.png', width=8, height=8, res=300, units='in')
 plotPCA(group_vsd, 'conditions')
+dev.off()
+
+png('../../figures/sample_rlog_PCA.png', width=8, height=8, res=300, units='in')
+plotPCA(sample_rlog, 'conditions')
+dev.off()
+
+png('../../figures/group_rlog_PCA.png', width=8, height=8, res=300, units='in')
+plotPCA(group_rlog, 'conditions')
 dev.off()
 ```
 
-![GroupPCA](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_group_vsd.pdf)
+![GroupVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_vsd_PCA.png)
 
-![SamplePCA](https://github.com/swd12012/ee282/blob/finalProject/project/data/processed/PCA_sample_vsd.pdf)
+![SampleVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_vsd_PCA.png)
+
+![GroupRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_rlog_PCA.png)
+
+![SampleRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_rlog_PCA.png)
