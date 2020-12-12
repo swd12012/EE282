@@ -4,9 +4,15 @@
 
 ___
 
-### Methods
+### Introduction
 
-Analysis was done in interactive mode. `srun -A ecoevo282 --pty --x11 bash -i`
+The retinal pigment epithelium (RPE) is a monolayer of epithelial cells that underlies the retina in the eye. It serves multiple functions, including delivering nutrients photoreceptors, phagocytosing photoreceptor outer segments (POS), and regeneration of ll-cis-retinal for the visual cycle. Recent work has implicated the micro-RNA family miR-204/211 in normal RPE physiology, and that this microRNA family is both (1) light regulated and (2) involved in the regulation of dinural phagocytosis. Phagocytosis is important for the maintenance of health of photoreceptors, shown by both the genetic evidence that disruption of phagocytosis results in retinal degeneration and by structural evidence which shows that the apical RPE membrane is in close physical contact with photoreceptor outer segments. There is a peak in phagocytosis of the distal POS one hour after the switch from dark to light, and as the RPE is a post-mitotic cell type, tight regulation of phagocytosis is critical for maintaing the health of the RPE. However, much is still unknown about the molecular mechanism of phagocytosis, and more work needs to be done to elucidate the pathways through which the RPE maintains retinal health.
+
+Here in this project, I analyze a bulk RNAseq dataset from a recently published paper that models photoreceptor death in a photosensitive mouse model ([Luu et al. 2020, _Human Molecular Genetics_](https://academic.oup.com/hmg/article/29/15/2611/5874042)). In this model, mice that are double knockouts for the photoreceptor proteins _Abca4_ and _Rhd8_ exhibit rapid photoreceptor degeneration upon bright light exposure. As the RPE is vital for maintaining the health of photoreceptors under physiologic conditions, I hypothesize that the RPE may play a pivotal role when dealing with a stressor such as light induced degeneration.
+
+The double-knockout mice (DKO) were compared at four different time points: non-bleached (NB), 6 hours, 1 day, and 3 days post-bleach (6h, 1d, and 3d) respectively. After sacrifice, the eye was enucleated and an eyecup was created, at which point RPE was isolated from the eyecup and prepared for library preparation. Four mice were analyzed at each timepoint.
+
+### Methods
 
 ##### Reference Genome
 
@@ -85,7 +91,7 @@ First, I cut out the columns that contain only the samples by running the follow
 
 ```bash
 cat readcounts.txt \
-cut -f7-22 \
+| cut -f7-22 \
 > readcounts_samplesonly.txt
 ```
 
@@ -136,10 +142,49 @@ plotPCA(group_rlog, 'conditions')
 dev.off()
 ```
 
+__Group VSD PCA__
 ![GroupVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_vsd_PCA.png)
 
+__Sample VSD PCA__
 ![SampleVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_vsd_PCA.png)
 
+__Group R-log PCA__
 ![GroupRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_rlog_PCA.png)
 
+__Sample R-log PCA__
 ![SampleRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_rlog_PCA.png)
+
+##### Differentially Expressed Gene (DEG) Analysis
+
+DEG analysis was conducted with `edgeR`(v3.30.3) and `systemPipeR` (v1.24.2); both are R packages downloaded via Bioconductor. R version was 3.6.2 to accomodate `systemPipeR`.
+
+```R
+library(edgeR)
+library(systemPipeR)
+
+#Read in raw counts file and targets file
+
+targets <- as.data.frame(read.delim('../targets.txt', header=T, comment.char='#'))
+countDF <- as.data.frame(read.table('readcounts_sampleENSEMBL.txt', header=T, row.names=1))
+
+#Define comparisons to be made, which are stated in the first line of the targets file
+cmp <- readComp(file='../targets.txt', format='matrix', delim='-')
+
+#Run edgeR
+edgeDF <- run_edgeR(countDF=countDF, targets=targets, cmp=cmp[[1]], independent=TRUE, mdsplot="")
+
+#Read in ENSEMBL annotations and remove first column (redundant information)
+annotations <- read.delim('../../reference/ENSEMBL_annotations.csv', header=T, sep=',', row.names=1)
+annotations <- annotations[,3-5]
+
+#Merge annotation file into edgeDF file
+annotated_edgeDF <- merge(edgeDF, annotations, by='row.names')
+
+#Re-create row names and remove redunant columns
+rownames(annotated_edgeDF) <- annotated_edgeDF[,1]
+annotated_edgeDF <- annotaged_edgeDF[,c(2:30,32,33)]
+
+#Write to file
+write.csv(annotated_edgeDF, '../../results/edgeR_allcomparisons.csv')
+
+```
