@@ -6,11 +6,11 @@ ___
 
 ### Introduction
 
-The retinal pigment epithelium (RPE) is a monolayer of epithelial cells that underlies the retina in the eye. It serves multiple functions, including delivering nutrients photoreceptors, phagocytosing photoreceptor outer segments (POS), and regeneration of ll-cis-retinal for the visual cycle. Recent work has implicated the micro-RNA family miR-204/211 in normal RPE physiology, and that this microRNA family is both (1) light regulated and (2) involved in the regulation of dinural phagocytosis. Phagocytosis is important for the maintenance of health of photoreceptors, shown by both the genetic evidence that disruption of phagocytosis results in retinal degeneration and by structural evidence which shows that the apical RPE membrane is in close physical contact with photoreceptor outer segments. There is a peak in phagocytosis of the distal POS one hour after the switch from dark to light, and as the RPE is a post-mitotic cell type, tight regulation of phagocytosis is critical for maintaing the health of the RPE. However, much is still unknown about the molecular mechanism of phagocytosis, and more work needs to be done to elucidate the pathways through which the RPE maintains retinal health.
+For the rest of the introduction, please refer to the topic and analysis proposals. 
 
-Here in this project, I analyze a bulk RNAseq dataset from a recently published paper that models photoreceptor death in a photosensitive mouse model ([Luu et al. 2020, _Human Molecular Genetics_](https://academic.oup.com/hmg/article/29/15/2611/5874042)). In this model, mice that are double knockouts for the photoreceptor proteins _Abca4_ and _Rhd8_ exhibit rapid photoreceptor degeneration upon bright light exposure. As the RPE is vital for maintaining the health of photoreceptors under physiologic conditions, I hypothesize that the RPE may play a pivotal role when dealing with a stressor such as light induced degeneration.
+The double-knockout mice (DKO) in this study were compared at four different time points: non-bleached (NB), 6 hours, 1 day, and 3 days post-bleach (6h, 1d, and 3d) respectively. After sacrifice, the eye was enucleated and an eyecup was created, at which point RPE was isolated from the eyecup and prepared for library preparation. Four mice were analyzed at each timepoint.
 
-The double-knockout mice (DKO) were compared at four different time points: non-bleached (NB), 6 hours, 1 day, and 3 days post-bleach (6h, 1d, and 3d) respectively. After sacrifice, the eye was enucleated and an eyecup was created, at which point RPE was isolated from the eyecup and prepared for library preparation. Four mice were analyzed at each timepoint.
+___
 
 ### Methods
 
@@ -85,7 +85,7 @@ On average, 85% of each bam file was aligned and counted by `featureCounts`.
 
 ##### Data Visualization and PCA plotting
 
-I used DESeq2 (v) to create group- and sample-wise PCA plotting by variance stablizing transformation. This will help analyse the variance of each sample and each group and point to potential outliers that may need to be removed in following steps.
+I used DESeq2 (v1.28.1) to create group- and sample-wise PCA plotting by variance stablizing transformation. This will help analyse the variance of each sample and each group and point to potential outliers that may need to be removed in following steps.
 
 First, I cut out the columns that contain only the samples by running the following:
 
@@ -175,16 +175,62 @@ edgeDF <- run_edgeR(countDF=countDF, targets=targets, cmp=cmp[[1]], independent=
 
 #Read in ENSEMBL annotations and remove first column (redundant information)
 annotations <- read.delim('../../reference/ENSEMBL_annotations.csv', header=T, sep=',', row.names=1)
-annotations <- annotations[,3-5]
+annotations <- annotations[,2-4]
 
 #Merge annotation file into edgeDF file
 annotated_edgeDF <- merge(edgeDF, annotations, by='row.names')
 
-#Re-create row names and remove redunant columns
+#Re-create row names and remove redundant columns
 rownames(annotated_edgeDF) <- annotated_edgeDF[,1]
 annotated_edgeDF <- annotaged_edgeDF[,c(2:30,32,33)]
 
 #Write to file
-write.csv(annotated_edgeDF, '../../results/edgeR_allcomparisons.csv')
+write.csv(annotated_edgeDF, '../../results/edgeR_allcomparisons_annotated.csv')
+
+#Subset dataframes based on relevant comparisons:
+NB.H6 <- DEGs_reordered[,1:6]
+NB.D1 <- DEGs_reordered[,c(1,7:11)]
+NB.D3 <- DEGs_reordered[,c(1,12:16)]
+
+#Filter based on logFC >= 1, <= -1, p-value <=0.05, FDR <= 0.05
+NB.H6_filtered <- filter(NB.H6, NB.H6_logFC >= 1 | NB.H6_logFC <= -1, NB.H6_PValue <=0.05, NB.H6_FDR <=0.05)
+NB.D1_filtered <- filter(NB.D1, NB.D1_logFC >= 1 | NB.D1_logFC <= -1, NB.D1_PValue <=0.05, NB.D1_FDR <=0.05)
+NB.D3_filtered <- filter(NB.D3, NB.D3_logFC >= 1 | NB.D3_logFC <= -1, NB.D3_PValue <=0.05, NB.D3_FDR <=0.05)
+
+#Write CSVs
+write.csv(NB.H6_filtered, 'NB.H6_filtered.csv')
+write.csv(NB.D1_filtered, 'NB.D1_filtered.csv')
+write.csv(NB.D3_filtered, 'NB.D3_filtered.csv')
+
+#Grab gene names from DEG lists
+NB.H6.genes <- as.list(NB.H6_filtered$Gene_names)
+NB.D1.genes <- as.list(NB.D1_filtered$Gene_names)
+NB.D3.genes <- as.list(NB.D3_filtered$Gene_names)
+
+#Plot Venn diagram with `Venn` function from `gplots` package (v3.0.4)
+png('../figures/DEGVenn.png', width=8, height=8, res=300, units='in')
+venn(list(NB.6h = NB.H6.genes, NB.d1 = NB.D1.genes, NB.d3 = NB.D3.genes))
+dev.off()
 
 ```
+
+![DEG Venn Diagram](https://github.com/swd12012/ee282/blob/finalProject/project/figures/DEGVenn.png)
+
+Looking at the Venn diagram of DEGs, 40 DEGs are shared across all four time-points. The largest changes occured 6 hours after photobleaching, with fewer DEGs at 1 day post-bleach and the fewest at 3 days post bleach. This corresponds to the analysis done in the paper, which showed a return to "normal" 3 days post-bleach.
+
+##### Functional Enrichment Analysis
+
+The DEGs for all comparisons were put into one file and uploaded to [DAVID 6.8](https://david.ncifcrf.gov/home.jsp) and [Metascape](https://metascape.org/gp/index.html#/main/step1) for functional enrichment.
+
+![Enrichment Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/HeatmapSelectedGOParent.png)
+
+I created two files with the names of the genes I extracted from the DAVID analysis for two pathways: phagosome formation and phagocytosis.
+
+I then merged them with the DEG file:
+```R
+#Read in files
+phagosome_genes <- read.csv('phagosomegenes.csv', header=F)
+phagocytosis_genes <- read.csv('phagocytosisgenes.csv', header=F)
+
+phagosome_counts <- merge(phagosome_genes, DEGs_reordered, by.x='V1', by.y='row.names')
+phagocytosis_counts <- merge(phagocytosis_genes, DEGs_reordered, by.x='V1', by.y='row.names')
