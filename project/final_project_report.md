@@ -228,9 +228,64 @@ I created two files with the names of the genes I extracted from the DAVID analy
 
 I then merged them with the DEG file:
 ```R
+library(lattice)
+library(gplots)
+library("RColorBrewer")
+
+#Set palette
+hmcol <- colorRampPalette(brewer.pal(9, "RdBu"))(100)
+
 #Read in files
 phagosome_genes <- read.csv('phagosomegenes.csv', header=F)
 phagocytosis_genes <- read.csv('phagocytosisgenes.csv', header=F)
 
 phagosome_counts <- merge(phagosome_genes, DEGs_reordered, by.x='V1', by.y='row.names')
 phagocytosis_counts <- merge(phagocytosis_genes, DEGs_reordered, by.x='V1', by.y='row.names')
+
+#Write phagocytosis heatmap data
+phagocytosis_counts <- read.csv('phagocytosis_counts.csv')
+
+#Data cleanup
+
+y <- as.matrix(phagocytosis_counts)
+
+y <- y[1:9,]
+
+rownames(y) <- y[,3]
+
+y <- y[,c(4,9,14)]
+
+colnames(y) <- c('NB.H6', 'NB.D1', 'NB.D3')
+
+outprefix <- 'phagocytosis'
+
+png("Phagocytosis_heatmap.png", width=8, height=8, res=300, units='in')
+levelplot(t(y), height=0.3, col.regions=rev(hmcol), main="Phagocytosis Gene Heatmap", colorkey=list(space="top"), xlab="", ylab="", pretty=TRUE, width=0.5, cexRow=0.1, cexCol=0.1, aspect=2.5)
+dev.off()
+
+#Write phagosome heatmap data
+phagosome_counts <- read.csv('phagosome_counts.csv')
+
+#Data cleanup
+
+z <- as.matrix(phagosome_counts)
+
+z <- z[c(1:3,5:9),]
+
+rownames(z) <- z[,3]
+
+z <- z[,c(4,9,14)]
+
+colnames(z) <- c('NB.H6', 'NB.D1', 'NB.D3')
+
+png("Phagosome_heatmap.png", width=8, height=8, res=300, units='in')
+levelplot(t(z), height=0.3, col.regions=rev(hmcol), main="Phagosome Gene Heatmap", colorkey=list(space="top"), xlab="", ylab="", pretty=TRUE, width=0.5, cexRow=0.1, cexCol=0.1, aspect=2.5)
+dev.off()
+```
+
+![Phagocytosis Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/Phagocytosis_heatmap.png)
+
+![Phagosome Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/Phagosome_heatmap.png)
+
+###Discussion
+
