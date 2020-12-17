@@ -12,7 +12,7 @@ The double-knockout mice (DKO) in this study were compared at four different tim
 
 ___
 
-### Methods
+### Methods and Results
 
 ##### Reference Genome
 
@@ -49,7 +49,7 @@ I created a [targets file](https://github.com/swd12012/ee282/blob/finalProject/p
 
 ##### Data Alignment
 
-Data was aligned with `bwa mem` and submitted to SLURM as a batch job with the two following scripts [1](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem.sub) [2](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem10-15.sub).
+Data was aligned with `bwa mem` and submitted to SLURM as a batch job with the two following scripts ([1](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem.sub) [2](https://github.com/swd12012/ee282/blob/finalProject/project/scripts/bwamem10-15.sub)).
 
 ##### Read counting
 
@@ -287,5 +287,26 @@ dev.off()
 
 ![Phagosome Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/Phagosome_heatmap.png)
 
-###Discussion
+### Discussion
 
+I demonstrated that I can take raw Illumina reads and take them through an RNAseq pipeline to find DEGs. My pipeline did vary from my proposed analysis, though I believe that I still was able to successfully analyze my data.
+
+After running FASTQC on my files, aligning, and counting, I ended up with an average of 85.5% reads aligned and counted. My Phred scores were over 28 for all reads, though if I trimmed the reads with a higher stringency, I could have perhaps had better alignment.
+
+Looking at my PCA plots, by both VSD and rlog analysis, the 6-hour-post-bleach group had the most variance. This could be a result of heterogeneity in the photobleaching protocol, but it means that caution must be used when this timepoint is analyzed. Subsequent analysis can also exclude these samples and see what difference that could potentially make. Sample 13 in the sample VSD analysis (dark green) also was a potential outlier. One major caveat of RPE and retina preparations is that it is impossible to cleanly separate RPE and retina during a dissection and they can contaminate each other's tissue preps, and so some samples may include more retina than others.
+
+Notably, the analysis in the paper showed the most DEGs at 1 day post-bleach, rather than at 6 hours, and found far less DEGs than I did by a factor of 3 or 4. Discrepancies can be due to the different analysis pipelines and stringencies for cutoffs, etc, as well as which groups were compared.
+
+I generated heatmaps for DEGs that were chosen through gene ontology analysis that related to phagocytosis and the phagosome. The gene _Mir6516_, also known as MER proto-oncogene tyrosine kinase (MerTK) was identified as significantly upregulated at 1 day post-bleach. This aligns with numerous studies in the field that identify this as a critical receptor in mediating RPE phagocytosis, suggesting that the RPE increases its phagocytosis of photoreceptor segments following this insult. As well, since RPE phagocytosis is diurnal, its upregulation at 1 day post bleach, rather than 6 hours post bleach, may be a result of its intrinsic regulation, though the signals that drive phagocytosis are yet to be completely elucidated.
+
+Another interesting gene that was identified in this analysis was _Gm24170_, or the tubby bipartite transcription factor gene. It is a transcription factor with unclear functions, and may play a role in modulating the RPE response to perturbations in homeostasis. 
+
+I had some trouble initially interpreting the data, as the gene names given to me by the ENSEMBL annotation were not listed as human gene names. For interpretation of these gene names I referred to the gene descriptions (found [here](https://github.com/swd12012/ee282/blob/finalProject/project/results/phagocytosis_counts.csv) and [here](https://github.com/swd12012/ee282/blob/finalProject/project/results/phagosome_counts.csv)) I am unsure if an error happened during the annotation where the gene name, ENSEMBL ID, and gene description got scrambled, or if these are the 'correct' ENSEMBL gene names. Subsequent analysis can reannotate the genes with the human orthologues.
+
+Future steps for analysis of this dataset may include determining if any targets of miR-204/211 are found as DEGs within this dataset. I can also cluster the data to see if there are subsets of RPE that respond differently from one another and focus on differential expression between groups. 
+
+Further, more careful analysis of this dataset will be required to determine if this model will be applicable to the specific project I have in mind, but the lessons I learned from this project will aid me in designing pipelines for my future projects, and I have identified genes that warrant a closer look. 
+
+#### Works Cited
+
+Luu, J. et al. 'Epigenetic hallmarks of age-related macular degeneration are recapitulated in a photosensitive mouse model.' _Human Molecular Genetics_. 29(15):2611-2624. 1 Aug 2020. (https://doi.org/10.1093/hmg/ddaa158)[https://doi.org/10.1093/hmg/ddaa158].
