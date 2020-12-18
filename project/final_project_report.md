@@ -8,11 +8,11 @@ ___
 
 For the rest of the introduction, please refer to the topic and analysis proposals. 
 
-The double-knockout mice (DKO) in this study were compared at four different time points: non-bleached (NB), 6 hours, 1 day, and 3 days post-bleach (6h, 1d, and 3d) respectively. After sacrifice, the eye was enucleated and an eyecup was created, at which point RPE was isolated from the eyecup and prepared for library preparation. Four mice were analyzed at each timepoint.
+The double-knockout mice (DKO) in this study were compared at four different time points: non-bleached (NB), 6 hours, 1 day, and 3 days post-bleach (6h, 1d, and 3d respectively). After sacrifice, the eye was enucleated and an eyecup was created, at which point RPE was isolated from the eyecup and prepared for library preparation. Four mice were analyzed at each timepoint.
 
 ___
 
-### Methods and Results
+### Methods
 
 #### Reference Genome
 
@@ -43,8 +43,6 @@ FASTQC was used to analyze read quality. The shell scripts [`fastqc.sh`](https:/
 sh /data/homezvol2/swdu/ee282/project/scripts/fastqc_dir.sh /data/homezvol2/swdu/ee282/project/data/rawdata/ /data/homezvol2/swdu/ee282/project/data/rawdata/
 ```
 
-The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
-
 I created a [targets file](https://github.com/swd12012/ee282/blob/finalProject/project/data/targets.txt) which annotated my .bam files with sample name, group, condition, etc.
 
 #### Data Alignment
@@ -61,27 +59,6 @@ featureCounts -T 16 \
   -o /data/class/ecoevo282/swdu/ee282/project/data/processed/readCounts.txt \
   /data/class/ecoevo282/swdu/ee282/project/data/processed/*.bam
   ```
-
-On average, 85% of each bam file was aligned and counted by `featureCounts`.
-
-| __Sample__           | % reads aligned |
-|------------------|:---------------:|
-| SRR121484_0.bam  |       85.8      |
-| SRR121484_10.bam |       85.5      |
-| SRR121484_11.bam |       85.1      |
-| SRR121484_12.bam |       85.7      |
-| SRR121484_13.bam |       85.5      |
-| SRR121484_14.bam |       85.6      |
-| SRR121484_15.bam |       85.9      |
-| SRR121484_1.bam  |       86.1      |
-| SRR121484_2.bam  |       86.4      |
-| SRR121484_3.bam  |       86.2      |
-| SRR121484_4.bam  |       85.4      |
-| SRR121484_5.bam  |       86.6      |
-| SRR121484_6.bam  |       84.8      |
-| SRR121484_7.bam  |       83.9      |
-| SRR121484_8.bam  |       84.5      |
-| SRR121484_9.bam  |       86.1      |
 
 #### Data Visualization and PCA plotting
 
@@ -141,18 +118,6 @@ png('../../figures/group_rlog_PCA.png', width=8, height=8, res=300, units='in')
 plotPCA(group_rlog, 'conditions')
 dev.off()
 ```
-
-__Group VSD PCA__
-![GroupVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_vsd_PCA.png)
-
-__Sample VSD PCA__
-![SampleVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_vsd_PCA.png)
-
-__Group R-log PCA__
-![GroupRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_rlog_PCA.png)
-
-__Sample R-log PCA__
-![SampleRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_rlog_PCA.png)
 
 ##### Differentially Expressed Gene (DEG) Analysis
 
@@ -214,15 +179,9 @@ dev.off()
 
 ```
 
-![DEG Venn Diagram](https://github.com/swd12012/ee282/blob/finalProject/project/figures/DEGVenn.png)
-
-Looking at the Venn diagram of DEGs, 40 DEGs are shared across all four time-points. The largest changes occured 6 hours after photobleaching, with fewer DEGs at 1 day post-bleach and the fewest at 3 days post bleach. This corresponds to the analysis done in the paper, which showed a return to "normal" 3 days post-bleach.
-
 #### Functional Enrichment Analysis
 
 The DEGs for all comparisons were put into one file and uploaded to [DAVID 6.8](https://david.ncifcrf.gov/home.jsp) and [Metascape](https://metascape.org/gp/index.html#/main/step1) for functional enrichment.
-
-![Enrichment Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/HeatmapSelectedGOParent.png)
 
 #### Sub-Pathway Analysis and Heatmaps
 
@@ -285,15 +244,72 @@ levelplot(t(z), height=0.3, col.regions=rev(hmcol), main="Phagosome Gene Heatmap
 dev.off()
 ```
 
+___
+
+### Results
+
+#### Read Quality
+
+The FASTQ quality score was good, with Phred scores above 28 for all of my files, with some over 32 for all reads.
+
+#### Counting and Aligning Statistics
+
+On average, 85% of each `bam` file was aligned and counted by `featureCounts`.
+
+| __Sample__           | % reads aligned |
+|------------------|:---------------:|
+| SRR121484_0.bam  |       85.8      |
+| SRR121484_10.bam |       85.5      |
+| SRR121484_11.bam |       85.1      |
+| SRR121484_12.bam |       85.7      |
+| SRR121484_13.bam |       85.5      |
+| SRR121484_14.bam |       85.6      |
+| SRR121484_15.bam |       85.9      |
+| SRR121484_1.bam  |       86.1      |
+| SRR121484_2.bam  |       86.4      |
+| SRR121484_3.bam  |       86.2      |
+| SRR121484_4.bam  |       85.4      |
+| SRR121484_5.bam  |       86.6      |
+| SRR121484_6.bam  |       84.8      |
+| SRR121484_7.bam  |       83.9      |
+| SRR121484_8.bam  |       84.5      |
+| SRR121484_9.bam  |       86.1      |
+| Average          |       85.5      |
+
+#### PCA Analysis
+VSD and rlog are two algorithms used to calculate variance, and they can each offer different results. The analysis is also presented grouped together by experimental condition or by sample.
+
+__Group VSD PCA__
+![GroupVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_vsd_PCA.png)
+
+__Sample VSD PCA__
+![SampleVSDPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_vsd_PCA.png)
+
+__Group R-log PCA__
+![GroupRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/group_rlog_PCA.png)
+
+__Sample R-log PCA__
+![SampleRLogPCA](https://github.com/swd12012/ee282/blob/finalProject/project/figures/sample_rlog_PCA.png)
+
+
+#### DEG Analysis
+
+![DEG Venn Diagram](https://github.com/swd12012/ee282/blob/finalProject/project/figures/DEGVenn.png)
+
+Looking at the Venn diagram of DEGs, 40 DEGs are shared across all four time-points. The largest changes occured 6 hours after photobleaching, with fewer DEGs at 1 day post-bleach and the fewest at 3 days post bleach. This corresponds to the analysis done in the paper, which showed a return to "normal" 3 days post-bleach. However, their peak in DEGs occurred at 1 day, not 6 hours.
+
+#### Heatmaps
+
+![Enrichment Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/HeatmapSelectedGOParent.png)
+
 ![Phagocytosis Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/Phagocytosis_heatmap.png)
 
 ![Phagosome Heatmap](https://github.com/swd12012/ee282/blob/finalProject/project/figures/Phagosome_heatmap.png)
-
 ___
 
 ### Discussion
 
-I demonstrated that I can take raw Illumina reads and take them through an RNAseq pipeline to find DEGs. My pipeline did vary from my proposed analysis, though I believe that I still was able to successfully analyze my data.
+I demonstrated that I can take raw Illumina reads and take them through an RNAseq pipeline to find DEGs. My pipeline did vary from my proposed analysis, though I believe that I was still able to successfully analyze my data.
 
 After running FASTQC on my files, aligning, and counting, I ended up with an average of 85.5% reads aligned and counted. My Phred scores were over 28 for all reads, though if I trimmed the reads with a higher stringency, I could have perhaps had better alignment.
 
