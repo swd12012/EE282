@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name=busco      ## Name of the job.
+#SBATCH -A ecoevo282     ## account to charge 
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --ntasks=1           ## (-n) number of tasks to launch
+#SBATCH --cpus-per-task=32    ## number of cores the job needs
+#SBATCH --error=slurm-%J.err ## error log file
+
+# Run busco analysis
+busco -c 32 -i ISO1.r6.ctg.fa -l diptera_odb10 -o DmelNCBI_busco -m genome
