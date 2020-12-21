@@ -70,7 +70,7 @@ dkms.conf
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+Mus_musculus.GRCm38.dna.toplevel.*.so
 *.dylib
 *.dll
 
@@ -449,7 +449,7 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -489,3 +489,7 @@ code/bin/*
 !data/processed/README.md
 !data/raw/README.md
 !data/README.md
+*.sam
+*.bam
+*.gz
+Mus_musculus.GRCm38.dna.toplevel.*

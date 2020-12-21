@@ -1,0 +1,19 @@
+#<CMP> CMPset1:ALL
+FileName1	FileName2	SampleName	Factor	SampleLong	Experiment
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148400_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148400_2.fastq.gz	SRR121484_0.bam	NB	SRR121484_0.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148401_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148401_2.fastq.gz	SRR121484_1.bam	NB	SRR121484_1.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148402_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148402_2.fastq.gz	SRR121484_2.bam	NB	SRR121484_2.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148403_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148403_2.fastq.gz	SRR121484_3.bam	NB	SRR121484_3.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148404_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148404_2.fastq.gz	SRR121484_4.bam	H6	SRR121484_4.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148405_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148405_2.fastq.gz	SRR121484_5.bam	H6	SRR121484_5.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148406_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148406_2.fastq.gz	SRR121484_6.bam	H6	SRR121484_6.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148407_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148407_2.fastq.gz	SRR121484_7.bam	H6	SRR121484_7.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148408_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148408_2.fastq.gz	SRR121484_8.bam	D1	SRR121484_8.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148409_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148409_2.fastq.gz	SRR121484_9.bam	D1	SRR121484_9.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148410_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148410_2.fastq.gz	SRR121484_10.bam	D1	SRR121484_10.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148411_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148411_2.fastq.gz	SRR121484_11.bam	D1	SRR121484_11.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148412_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148412_2.fastq.gz	SRR121484_12.bam	D3	SRR121484_12.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148413_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148413_2.fastq.gz	SRR121484_13.bam	D3	SRR121484_13.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148414_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148414_2.fastq.gz	SRR121484_14.bam	D3	SRR121484_14.bam	1
+/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148415_1.fastq.gz	/data/class/ecoevo282/swdu/ee282/project/data/rawdata/SRR12148415_2.fastq.gz	SRR121484_15.bam	D3	SRR121484_15.bam	1
+
