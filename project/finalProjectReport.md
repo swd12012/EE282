@@ -280,31 +280,31 @@ On average, 85% of each `bam` file was aligned and counted by `featureCounts`.
 VSD and rlog are two algorithms used to calculate variance, and they can each offer different results. The analysis is also presented grouped together by experimental condition or by sample.
 
 __Group VSD PCA__
-![GroupVSDPCA](https://github.com/swd12012/ee282/tree/main/project/figures/group_vsd_PCA.png)
+![GroupVSDPCA](https://github.com/swd12012/ee282/blob/main/project/figures/group_vsd_PCA.png)
 
 __Sample VSD PCA__
-![SampleVSDPCA](https://github.com/swd12012/ee282/tree/main/project/figures/sample_vsd_PCA.png)
+![SampleVSDPCA](https://github.com/swd12012/ee282/blob/main/project/figures/sample_vsd_PCA.png)
 
 __Group R-log PCA__
-![GroupRLogPCA](https://github.com/swd12012/ee282/tree/main/project/figures/group_rlog_PCA.png)
+![GroupRLogPCA](https://github.com/swd12012/ee282/blob/main/project/figures/group_rlog_PCA.png)
 
 __Sample R-log PCA__
-![SampleRLogPCA](https://github.com/swd12012/ee282/tree/main/project/figures/sample_rlog_PCA.png)
+![SampleRLogPCA](https://github.com/swd12012/ee282/blob/main/project/figures/sample_rlog_PCA.png)
 
 
 #### DEG Analysis
 
-![DEG Venn Diagram](https://github.com/swd12012/ee282/tree/main/project/figures/DEGVenn.png)
+![DEG Venn Diagram](https://github.com/swd12012/ee282/blob/main/project/figures/DEGVenn.png)
 
 Looking at the Venn diagram of DEGs, 40 DEGs are shared across all four time-points. The largest changes occured 6 hours after photobleaching, with fewer DEGs at 1 day post-bleach and the fewest at 3 days post bleach. This corresponds to the analysis done in the paper, which showed a return to "normal" 3 days post-bleach. However, their peak in DEGs occurred at 1 day, not 6 hours.
 
 #### Heatmaps
 
-![Enrichment Heatmap](https://github.com/swd12012/ee282/tree/main/project/figures/HeatmapSelectedGOParent.png)
+![Enrichment Heatmap](https://github.com/swd12012/ee282/blob/main/project/figures/HeatmapSelectedGOParent.png)
 
-![Phagocytosis Heatmap](https://github.com/swd12012/ee282/tree/main/project/figures/Phagocytosis_heatmap.png)
+![Phagocytosis Heatmap](https://github.com/swd12012/ee282/blob/main/project/figures/Phagocytosis_heatmap.png)
 
-![Phagosome Heatmap](https://github.com/swd12012/ee282/tree/main/project/figures/Phagosome_heatmap.png)
+![Phagosome Heatmap](https://github.com/swd12012/ee282/blob/main/project/figures/Phagosome_heatmap.png)
 ___
 
 ### Discussion
